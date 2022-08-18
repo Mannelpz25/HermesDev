@@ -1,10 +1,10 @@
 import React from 'react'
 import { useMemo } from "react"
 import { Delete, ExpandMore } from '@mui/icons-material'
-import { Collapse, IconButton, Card, CardContent, Typography, CardActions, Button, CardHeader } from '@mui/material'
+import { Collapse, IconButton, Card, CardContent, Typography, CardActions, Button, CardHeader, CardActionArea } from '@mui/material'
 
 
-export const NoteCard = ({title, body}) => {
+export const NoteCard = ({title, body, color}) => {
     const [expanded, setExpanded] = React.useState(false);
 
     const handleExpandClick = () => {
@@ -18,7 +18,8 @@ export const NoteCard = ({title, body}) => {
     },[body]);
 
   return (
-    <Card sx={{ bgcolor: "gray", minHeight: 250, maxWidth: 275, m: 2 }}>
+    <Card sx={{ bgcolor: color, minHeight: 250, maxWidth: 275, m: 2 }}>
+      
       <CardHeader
         action={
           <IconButton aria-label="Delete">
@@ -27,13 +28,22 @@ export const NoteCard = ({title, body}) => {
         }
         title={title}
       />
-      <CardContent sx={{px: 2, py: 0  }}>
+      <CardActionArea       
+      sx={{         
+        minHeight: body.length > 120 ? 140 : 185,
+        display: 'flex'
+      }}>
+      <CardContent sx={{px: 2, py: 1 ,  alignSelf: 'flex-start'}}>
         <Typography paragraph sx={{m: 0}}>
           {expanded ? body : shortBody}
         </Typography>
       </CardContent>
       <Collapse in={expanded} timeout="auto" unmountOnExit/>    
-      <CardActions sx={{m: 0}}>
+      </CardActionArea>          
+      <CardActions sx={{
+        m: 0,
+        display: body.length > 120 ? 'inline' : 'none',
+        }}>
         <IconButton
             onClick={handleExpandClick}
             aria-label="show more"
@@ -45,7 +55,7 @@ export const NoteCard = ({title, body}) => {
         >
           <ExpandMore />
         </IconButton>
-      </CardActions>
+      </CardActions> 
       
     </Card>
   );

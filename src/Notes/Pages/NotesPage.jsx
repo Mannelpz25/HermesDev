@@ -1,27 +1,31 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Grid, Typography, IconButton } from '@mui/material'
 import { NoteCard } from '../components/NoteCard';
 import { NoteAddOutlined } from '@mui/icons-material'
 import { useSelector, useDispatch} from "react-redux"
+import { NotePane } from '../components/NotePane';
+import { startNewNote } from '../../store/Notes/thunks';
 
 
 export const NotesPage = () => {    
-    const dispatch = useDispatch();
-    const{notes,activeNote, messageSaved, isSaving} = useSelector( state => state.notes);
    
+    const{notes, activeNote, messageSaved, isSaving} = useSelector( state => state.notes);
+  
+    
     return (
     <>
         <Typography variant='h3'>Notes Page</Typography>
-        <Grid container>
+        <NotePane drawerWidth={350}/>
+        <Grid container sx={{mx:1}}>
             {
                 notes.map(note =>(
-                    <Grid item>
+                    <Grid item key={ note.id}>
                         <NoteCard {...note}/>   
                     </Grid>
                 ))
             }
         </Grid>
-        <IconButton
+        {/* <IconButton
             size='large'
             sx={{
             color:'white',
@@ -33,7 +37,7 @@ export const NotesPage = () => {
             }}
         >
             <NoteAddOutlined sx={{fontSize: 35}}/>
-        </IconButton>
+        </IconButton> */}
     </>
   )
 }

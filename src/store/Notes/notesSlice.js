@@ -10,8 +10,9 @@ export const notesSlice = createSlice({
         {
             id: '1',
             title:'Titulo',
-            body: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+            body: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum simply dummy text of the printing',
             date: 12345,
+            color: "#95928C"
         }
     ],
     activeNote: null
@@ -28,11 +29,11 @@ export const notesSlice = createSlice({
     savingNewNote: (state) => {
         state.isSaving = true;
     },
-    addNewEmptyNote:( state, action) => {
+    addNewNote:( state, action) => {
         state.notes.push(action.payload);
         state.isSaving = false;
     },
-    setactiveNote: (state, action) => {
+    setActiveNote: (state, action) => {
         state.activeNote = action.payload;        
         state.messageSaved = '';
     },
@@ -54,10 +55,7 @@ export const notesSlice = createSlice({
 
         state.messageSaved = `${action.payload.title}, actualizada correctamente`;
     },
-    setPhotosToActiveNote: (state, action) => {
-        state.activeNote.imageURLs = [...state.activeNote.imageURLs, ...action.payload];
-        state.isSaving = false;
-    },
+    
     clearNotesLogout: (state) => {
         state.isSaving= false;
         state.messageSaved= '';
@@ -75,13 +73,12 @@ export const notesSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const { 
-    addNewEmptyNote,
-    setactiveNote,
+    addNewNote,
+    setActiveNote,
     setNotes,
     setSaving,
     updateNote,
     deleteNoteById, 
     savingNewNote,
-    setPhotosToactiveNote,
     clearNotesLogout,
 } = notesSlice.actions

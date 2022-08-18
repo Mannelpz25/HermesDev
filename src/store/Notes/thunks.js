@@ -1,27 +1,25 @@
 /* import { collection, deleteDoc, doc, setDoc } from "firebase/firestore/lite";
 import { FirebaseDB } from "../../firebase/config"; */
-import { fileUpload, loadNotes } from "../../helpers";
-import { addNewEmptyNote, setActiveNote, savingNewNote, setNotes,setSaving,updateNote,setPhotosToActiveNote ,deleteNoteById } from "./";
+import { addNewNote, setActiveNote, savingNewNote, setNotes,setSaving,updateNote ,deleteNoteById } from "./notesSlice";
 
 
-export const startNewNote = () => {
+export const startNewNote = (color) => {
     return async ( dispatch, getState ) => {
         //uid
         dispatch(savingNewNote());
-        const { uid } = getState().auth;
+        
 
         const newNote ={
             title: '',
             body: '',
             date: new Date().getTime(), 
-            imageURLs: []
+            color
         }
         /* const newDoc = doc( collection( FirebaseDB, `${uid}/journal/notes` ) ); */
         /* await setDoc(newDoc, newNote); */
 
-        newNote.id = newDoc.id;
+        newNote.id = new Date().getTime();
         //dispatch
-        dispatch(addNewEmptyNote(newNote));
         dispatch(setActiveNote(newNote));
     }
 }
@@ -37,18 +35,17 @@ export const startLoadingNotes = () => {
 }
 
 export const startSaveNote = () => {
-    return async ( dispatch, getState ) => {
+    return  ( dispatch, getState ) => {
         dispatch(setSaving());
-        //uid        
-        const { uid } = getState().auth;        
-        const {active:note} = getState().journal;
+        //uid       
+        const {activeNote:note} = getState().notes;
         
        /*  const noteToFireStore = { ...note };
         delete noteToFireStore.id;
         const docRef = doc( FirebaseDB,`${uid}/journal/notes/${note.id}` ) ; */
 
         /* await setDoc(docRef, noteToFireStore, {merge: true}) */
-        dispatch(updateNote(note));
+        dispatch(addNewNote(note));
         
 
     }
@@ -74,7 +71,7 @@ export const startDeletingNote = (files = []) => {
         dispatch(setSaving());
         //uid        
         const { uid } = getState().auth;        
-        const {active:note} = getState().journal;  
+        const {activeNote:note} = getState().notes;  
         /* const docRef = doc( FirebaseDB,`${uid}/journal/notes/${note.id}` ) ;
         await deleteDoc(docRef);     */
 
