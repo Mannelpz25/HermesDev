@@ -16,7 +16,7 @@ export const NotesPage = () => {
     <NotesLayout>
         
         <NotePane />
-        <Grid container sx={{ml: `calc(${61}px)` , mr: 1}}>
+        <Grid container sx={{ml: `calc(${60}px)` , mr: 0}}>
             {
                 notes.map(note =>(
                     <Grid item key={ note.id}>

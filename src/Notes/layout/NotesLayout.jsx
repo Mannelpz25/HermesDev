@@ -8,7 +8,7 @@ import { TopBar } from "../components/TopBar";
 export const NotesLayout = ({children}) => {
   return (
     <>              
-        <Box  sx={{display: 'flex', m: 0}}>                      
+        <Box  sx={{display: 'flex', m: 0, p:0}}>                      
             <TopBar drawerWidth={60}/>
         </Box>
         <SideBar drawerWidth={60}/>  

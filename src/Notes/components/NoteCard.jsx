@@ -33,7 +33,7 @@ export const NoteCard = ({title, body, color, id, date}) => {
     }
 
   return (
-    <Card sx={{ bgcolor: color, minHeight: 250, minWidth: 180, maxWidth: 238, m: 2 }}>
+    <Card sx={{ bgcolor: color, minHeight: 250, minWidth: 180, maxWidth: 238, m: 1 }}>
       
       <CardHeader
         action={
