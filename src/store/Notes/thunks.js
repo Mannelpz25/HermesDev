@@ -20,6 +20,7 @@ export const startNewNote = (color) => {
 
         newNote.id = new Date().getTime();
         //dispatch
+        
         dispatch(setActiveNote(newNote));
     }
 }
@@ -38,14 +39,21 @@ export const startSaveNote = () => {
     return  ( dispatch, getState ) => {
         dispatch(setSaving());
         //uid       
-        const {activeNote:note} = getState().notes;
+        const {activeNote, notes} = getState().notes;
+        const isNewNote = notes.filter( note => note.id == activeNote.id);
+        if (isNewNote.length){
+            dispatch(updateNote(activeNote));
+        }else{
+            dispatch(addNewNote(activeNote));
+        }
+        
         
        /*  const noteToFireStore = { ...note };
         delete noteToFireStore.id;
         const docRef = doc( FirebaseDB,`${uid}/journal/notes/${note.id}` ) ; */
 
         /* await setDoc(docRef, noteToFireStore, {merge: true}) */
-        dispatch(addNewNote(note));
+        
         
 
     }
@@ -67,10 +75,9 @@ export const startSaveNote = () => {
 } */
 
 export const startDeletingNote = (files = []) => {
-    return async ( dispatch, getState ) => {
+    return  ( dispatch, getState ) => {
         dispatch(setSaving());
-        //uid        
-        const { uid } = getState().auth;        
+        //uid                
         const {activeNote:note} = getState().notes;  
         /* const docRef = doc( FirebaseDB,`${uid}/journal/notes/${note.id}` ) ;
         await deleteDoc(docRef);     */
