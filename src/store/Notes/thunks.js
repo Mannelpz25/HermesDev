@@ -3,7 +3,7 @@ import { FirebaseDB } from "../../firebase/config"; */
 import { addNewNote, setActiveNote, savingNewNote, setNotes,setSaving,updateNote ,deleteNoteById } from "./notesSlice";
 
 
-export const startNewNote = (color) => {
+export const startNewNote = (color, workspace) => {
     return async ( dispatch, getState ) => {
         //uid
         dispatch(savingNewNote());
@@ -13,7 +13,8 @@ export const startNewNote = (color) => {
             title: '',
             body: '',
             date: new Date().getTime(), 
-            color
+            color,
+            workspace
         }
         /* const newDoc = doc( collection( FirebaseDB, `${uid}/journal/notes` ) ); */
         /* await setDoc(newDoc, newNote); */

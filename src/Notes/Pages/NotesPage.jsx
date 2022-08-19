@@ -1,30 +1,23 @@
 import React from 'react'
-import { Grid, Typography, IconButton } from '@mui/material'
-import { NoteCard } from '../components/NoteCard';
 import { useSelector} from "react-redux"
-import { NotePane } from '../components/NotePane';
 import { NotesLayout } from '../layout/NotesLayout';
+import { NothingSelectedView } from '../views/NothingSelectedView';
+import { WorkspaceView } from '../views/workspaceView';
 
 
 export const NotesPage = () => {    
    
-    const{notes} = useSelector( state => state.notes);
-    
-  
+    const{notes, activeWorkspace} = useSelector( state => state.notes); 
     
     return (
     <NotesLayout>
+        {
+        (!!activeWorkspace)
+        ? <WorkspaceView />
+        : <NothingSelectedView />
+        }
         
-        <NotePane />
-        <Grid container sx={{ml: `calc(${60}px)` , mr: 0}}>
-            {
-                notes.map(note =>(
-                    <Grid item key={ note.id}>
-                        <NoteCard {...note}/>   
-                    </Grid>
-                ))
-            }
-        </Grid>
+        
         
     </NotesLayout>
   )

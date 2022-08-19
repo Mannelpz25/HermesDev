@@ -1,4 +1,5 @@
 import { Box, Divider } from "@mui/material"
+import { useSelector } from "react-redux";
 import { SideBar } from "../components/SideBar";
 import { TopBar } from "../components/TopBar";
 

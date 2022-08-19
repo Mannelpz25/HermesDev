@@ -1,12 +1,14 @@
-import { Avatar, MenuItem, Divider, Grid, IconButton, Toolbar, Tooltip, Menu, Box } from "@mui/material"
-import { PersonAdd, Settings , Logout  } from "@mui/icons-material"
+import { Avatar, MenuItem, Divider, Grid, IconButton, Toolbar, Tooltip, Menu, Box,Typography } from "@mui/material"
+import { Settings , Logout  } from "@mui/icons-material"
 
 import ListItemIcon from '@mui/material/ListItemIcon';
 import React from 'react'
+import { useSelector } from "react-redux";
 
 const userName = "Manuel López"
 
 export const TopBar = ({drawerWidth = 280}) => {
+    const{activeWorkspace} = useSelector( state => state.notes); 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -19,25 +21,45 @@ export const TopBar = ({drawerWidth = 280}) => {
      return (
         <Box         
             sx={{
-                width: {sm: `calc(100% - ${drawerWidth}px)` },
-                ml:  {sm: `${drawerWidth}px`},
+                width: `calc(100% - ${drawerWidth}px)` ,
+                ml:  `${drawerWidth}px`,
+                
                 
             }}
         >
-            <Toolbar sx={{alignSelf: "flex-end",height: 10, m: 0,bgcolor: "#D3D3D3"}}>            
-                <Grid  container   justifyContent='flex-end' alignItems='center'> 
-                <Tooltip title={userName}>              
-                    <IconButton
-                        onClick={handleClick}
-                        size="small"
-                        sx={{ ml: 2 }}
-                        aria-controls={open ? 'account-menu' : undefined}
-                        aria-haspopup="true"
-                        aria-expanded={open ? 'true' : undefined}
-                    >
-                        <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
-                    </IconButton>
-                </Tooltip>
+            <Toolbar sx={{ m: 0,bgcolor: "#D3D3D3",
+                minHeight: {
+                    xs: 60,
+                    md: 60
+                    },
+            
+            }}>            
+                <Grid  container justifyContent="space-between"   alignItems='center'> 
+                <Grid item >
+                <Typography color="DimGray"  sx={{fontSize:  `calc(100% * ${1.4})`, ml: 1}}>
+                    {!!activeWorkspace
+                        ? activeWorkspace.name
+                        : ""
+                    } 
+                    
+                </Typography>
+                </Grid>
+                <Grid item >
+                    <Tooltip title={userName}>              
+                        <IconButton
+                            onClick={handleClick}
+                            size="small"
+                            sx={{ ml: 2 }}
+                            aria-controls={open ? 'account-menu' : undefined}
+                            aria-haspopup="true"
+                            aria-expanded={open ? 'true' : undefined}
+                        >
+                            <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+                        </IconButton>
+                    </Tooltip>
+                </Grid>
+                
+                
                 </Grid>
             
             <Menu

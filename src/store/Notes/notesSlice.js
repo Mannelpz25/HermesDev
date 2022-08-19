@@ -6,13 +6,21 @@ export const notesSlice = createSlice({
     isSaving: false,
     isLoadingNotes: true,
     messageSaved: '',
+    activeWorkspace: null,
+    workspaces:[
+        {
+            id: '1',
+            name: 'Personal'
+        }
+    ],
     notes: [
         {
             id: '1',
             title:'Titulo',
             body: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum simply dummy text of the printing',
             date: 12345,
-            color: "#95928C"
+            color: "#95928C",
+            workspace: "1"
         }
     ],
     activeNote: null

@@ -9,6 +9,7 @@ import {
   Grid,
   SpeedDial,
   SpeedDialAction,
+  Fade,
 } from "@mui/material";
 import {
   CancelOutlined,
@@ -46,18 +47,29 @@ export const NotePane = () => {
     activeNote: note,
     messageSaved,
     isSaving,
+    activeWorkspace
   } = useSelector((state) => state.notes);
   const { body, title, date, id, onInputChange, formState } = useForm(note);  
   const [isOpen, setIsOpen] = useState(false);
 
   const onClickNewNote = (color) => (event) => {       
-    dispatch(startNewNote(color));
+    dispatch(startNewNote(color, activeWorkspace.id));
   };
   
   useEffect(() => {
     if(note!==null)
       setIsOpen(true);
   }, [note]);
+  const [direction, setDirection] = useState("left");
+
+  const handleResize = () => {
+    window.innerWidth > 610 
+      ? setDirection("left") 
+      : setDirection("up")
+  };
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     dispatch(setActiveNote(formState));
@@ -81,6 +93,7 @@ export const NotePane = () => {
 
   return (
     <>
+      
       <Drawer
         anchor={"right"}
         open={isOpen}
@@ -90,45 +103,60 @@ export const NotePane = () => {
           display: { xs: "block" },
           "& .MuiDrawer-paper": {
             boxSizing: "border-box",
-            width: 350,
+            width: {
+              xs: `calc(85%)`,
+              sm: `calc(50%)`,
+              md:  `calc(35%)`
+            
+            },
             bgcolor: "WhiteSmoke",
           },
         }}
-      >
-        <SpeedDial
-          ariaLabel="SpeedDial basic example"
-          direction="down"
-          open={true}
-          sx={{
-            position: "fixed",
-            bottom: 16,
-            right: 355,
-            "& .MuiFab-primary": {
-              backgroundColor: "#145858",
-              color: "blue",
-              opacity: 0,
-              "&:hover": {
-                backgroundColor: "#145858",
-                opacity: 0,
+      > 
+        <Fade in={isOpen} timeout={4500}>
+          <SpeedDial
+            ariaLabel="SpeedDial basic example"
+            direction="down"
+            open={true}
+            sx={{
+              display: isOpen ? "block": "none",
+              position: "fixed",
+              bottom: 2,
+              right: {
+                xs: `calc(85%)`,
+                sm: `calc(50%)`,
+                md:  `calc(35%)`
+
               },
-            },
-          }}
-        >
-          {colors.map((action) => (
-            <SpeedDialAction
-              key={action.name}
-              sx={{
-                bgcolor: action.color,
+              
+              "& .MuiFab-primary": {
+                opacity: 0,
                 "&:hover": {
-                  backgroundColor: action.color,
-                  opacity: 0.3,
+                  opacity: 0,
                 },
-              }}
-              tooltipTitle={action.name}
-              onClick={changeColorNote(action.color)}
-            />
-          ))}
-        </SpeedDial>
+              },
+            }}
+          >
+            {colors.map((action) => (
+              <SpeedDialAction
+                key={action.name}
+                sx={{
+                  minHeight: 30,
+                  maxHeight: 30,
+                  maxWidth: 30,
+                  bgcolor: action.color,
+                  "&:hover": {
+                    backgroundColor: action.color,
+                    opacity: 0.3,
+                  },
+                }}
+                tooltipTitle={action.name}
+                onClick={changeColorNote(action.color)}
+              />
+            ))}
+          </SpeedDial>
+        </Fade>
+        
         <Grid
           container
           sx={{ height: 80, p: 2, alignItems: "center", bgcolor: note ? note.color : "white"}}
@@ -136,7 +164,7 @@ export const NotePane = () => {
           <NoteAltOutlined
             sx={{ color: "white", marginRight: 2, fontSize: 50 }}
           />
-          <Typography color="white" variant="h4" textAlign="right">
+          <Typography color="white" textAlign="right" sx={{fontSize:  `calc(100% * ${1.7})`}}>
             Datos de la nota
           </Typography>
         </Grid>
@@ -247,15 +275,14 @@ export const NotePane = () => {
         
       </Drawer>
       <SpeedDial
-        ariaLabel="SpeedDial basic example"
-        direction="left"
-        sx={{
-          position: "absolute",
+        ariaLabel ="SpeedDial basic example"
+        direction = {direction}
+        sx={{          
+          position: "fixed",
           bottom: 16,
           right: 16,
           "& .MuiFab-primary": {
             backgroundColor: "#145858",
-            color: "blue",
             "&:hover": {
               backgroundColor: "#145858",
               opacity: 0.5,
@@ -268,6 +295,9 @@ export const NotePane = () => {
           <SpeedDialAction
             key={action.name}
             sx={{
+              minHeight: 30,
+              maxHeight: 30,
+              maxWidth: 30,
               bgcolor: action.color,
               "&:hover": {
                 backgroundColor: action.color,

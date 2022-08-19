@@ -8,8 +8,7 @@ export const SideBar = ({drawerWidth = 280}) => {
   
 
   return (
-    <>
-     
+    <>     
       <Drawer
         anchor={'left'}
         variant="permanent"
@@ -23,11 +22,8 @@ export const SideBar = ({drawerWidth = 280}) => {
           '& .MuiDrawer-paper': {boxSizing: 'border-box',width: drawerWidth}          
         }}
       >
-        <Box sx={{display: "flex", backgroundColor: 'tertiary.main', justifyContent: "center", height: 63}}>
+        <Box sx={{display: "flex", backgroundColor: 'tertiary.main', justifyContent: "center", height: 60}}>
             <StickyNote2Outlined sx={{ alignSelf: 'center', color: "white", fontSize: 25}} />
-          {/* <Typography color="white" noWrap component='div'>
-            Hermes
-          </Typography> */}
         </Box>
         <Divider/>
         <List >
@@ -35,56 +31,40 @@ export const SideBar = ({drawerWidth = 280}) => {
             <ListItemButton >
                 <ListItemIcon sx={{
                     color:'white',
+                    minWidth: 24
                     }}>
                     <Workspaces/>
                 </ListItemIcon>
-                <Grid container sx={{
-                    color:'white',
-                    }}>
-                    {/* <ListItemText primary={ "Workspaces" }/> */}
-                </Grid>
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding >
             <ListItemButton >
                 <ListItemIcon sx={{
                     color:'white',
+                    minWidth: 24
                     }}>
                     <Label/>
                 </ListItemIcon>
-                <Grid container sx={{
-                    color:'white',
-                    }}>
-                    {/* <ListItemText primary={ "Tags" }/> */}
-                </Grid>
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding >
             <ListItemButton >
                 <ListItemIcon sx={{
                     color:'white',
+                    minWidth: 24
                     }}>
                     <DeleteSweep/>
                 </ListItemIcon>
-                <Grid container sx={{
-                    color:'white',
-                    }}>
-                    {/* <ListItemText primary={ "Trash" }/> */}
-                </Grid>
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding >
             <ListItemButton >
                 <ListItemIcon sx={{
                     color:'white',
+                    minWidth: 24
                     }}>
                     <Help/>
                 </ListItemIcon>
-                <Grid container sx={{
-                    color:'white',
-                    }}>
-                    {/* <ListItemText primary={ "Help" }/> */}
-                </Grid>
             </ListItemButton>
           </ListItem>
         </List>
