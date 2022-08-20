@@ -1,24 +1,16 @@
-import React from 'react'
-import { useSelector} from "react-redux"
-import { NotesLayout } from '../layout/NotesLayout';
-import { NothingSelectedView } from '../views/NothingSelectedView';
-import { WorkspaceView } from '../views/workspaceView';
+import { useSelector } from "react-redux";
+import { NotesLayout } from "../layout/NotesLayout";
+import { TrashPage } from "../Trash/Pages/TrashPage";
+import { NothingSelectedView } from "../views/NothingSelectedView";
+import { WorkspaceView } from "../views/workspaceView";
 
+export const NotesPage = () => {
+	const { activeWorkspace } = useSelector((state) => state.notes);
+	const { activeTrash } = useSelector((state) => state.trash);
 
-export const NotesPage = () => {    
-   
-    const{notes, activeWorkspace} = useSelector( state => state.notes); 
-    
-    return (
-    <NotesLayout>
-        {
-        (!!activeWorkspace)
-        ? <WorkspaceView />
-        : <NothingSelectedView />
-        }
-        
-        
-        
-    </NotesLayout>
-  )
-}
+	return (
+		<NotesLayout>
+			{!!activeWorkspace ? <WorkspaceView /> : activeTrash? <TrashPage/> :<NothingSelectedView />}			
+		</NotesLayout>
+	);
+};
