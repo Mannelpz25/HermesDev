@@ -21,6 +21,10 @@ export const notesSlice = createSlice({
 				name: "Personal",
 			},
 		],
+		workspaceDefault: {
+			id: "AB68HrnaWYgzo67",
+			name: "Sin Asignar"
+		},
 		notes: [
 			{
 				id: "1",
@@ -43,10 +47,14 @@ export const notesSlice = createSlice({
 		addNewWorkspace: (state, action) => {
 			state.workspaces.push(action.payload);
 			state.isSaving = false;
+			state.activeNote = null;
 		},
 		setActiveNote: (state, action) => {
 			state.activeNote = action.payload;
 			state.messageSaved = "";
+		},
+		setWorkspaceActiveNote: (state, action) => {
+			state.activeNote = action.payload;
 		},
 		setActiveWorkspace: (state, action) => {
 			state.activeWorkspace = action.payload;
@@ -71,7 +79,7 @@ export const notesSlice = createSlice({
 				}
 				return note;
 			});
-
+			state.activeNote = null;
 			state.messageSaved = `${action.payload.title}, actualizada correctamente`;
 		},
         updateWorkspace: (state, action) => {
@@ -82,7 +90,7 @@ export const notesSlice = createSlice({
 				}
 				return note;
 			});
-
+			state.activeNote = null;
 			state.messageSaved = `${action.payload.title}, actualizada correctamente`;
 		},
 		clearNotesLogout: (state) => {
@@ -105,6 +113,7 @@ export const notesSlice = createSlice({
         deleteWorkspaceById: (state, action) => {
 			state.workspaces = state.workspaces.filter((workspace) => workspace.id !== action.payload);
 			state.activeWorkspace = null;
+			state.activeNote = null;
 			state.isSaving = false;
 		},
 	},
@@ -114,6 +123,7 @@ export const notesSlice = createSlice({
 export const {
 	addNewNote,
 	addNewWorkspace,
+	setWorkspaceActiveNote,
 	setActiveNote,
 	setActiveWorkspace,
 	setActiveTag,

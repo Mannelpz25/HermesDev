@@ -4,6 +4,7 @@ import {
 	addNewWorkspace,
 	addNewNote,
 	setActiveNote,
+	setWorkspaceActiveNote,
 	savingNewNote,
 	setNotes,
 	setSaving,
@@ -153,4 +154,3 @@ export const startDeletingWorkspace = (files = []) => {
 
     }
 } */
-

@@ -82,7 +82,7 @@ export const TopBar = ({ drawerWidth = 280 }) => {
 			>
 				<Grid container justifyContent="space-between" alignItems="center">
 					<Grid item >
-						<Toolbar onClick={activeTrash ? null : handleOpenModal} sx={{
+						<Toolbar onClick={activeTrash ? null : activeWorkspace?.name ==='Sin Asignar' ? null : handleOpenModal} sx={{
 							m: 0,
 							minHeight: {
 								xs: 60,

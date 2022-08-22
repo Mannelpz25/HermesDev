@@ -9,11 +9,19 @@ import {
 	SpeedDial,
 	SpeedDialAction,
 	Fade,
+	IconButton,
+	Tooltip,
+	Menu,
+	MenuItem,
+	ListItemIcon
 } from "@mui/material";
 import {
 	CancelOutlined,
 	NoteAltOutlined,
 	SaveOutlined,
+	ChangeCircle,
+	Circle,
+	HorizontalRule
 } from "@mui/icons-material";
 import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import { useEffect, useState } from "react";
@@ -43,6 +51,8 @@ export const NotePane = () => {
 		messageSaved,
 		isSaving,
 		activeWorkspace,
+		workspaces,
+		workspaceDefault,
 	} = useSelector((state) => state.notes);
 	const { body, title, date, id, workspace, onInputChange, formState } =
 		useForm(note);
@@ -51,10 +61,18 @@ export const NotePane = () => {
 	const onClickNewNote = (color) => (event) => {
 		dispatch(startNewNote(color, activeWorkspace.id));
 	};
-
+	const [anchorEl, setAnchorEl] = useState(null);
+	const open = Boolean(anchorEl);
+	const handleClick = (event) => {
+		setAnchorEl(event.currentTarget);
+	};
+	const handleClose = () => {
+		setAnchorEl(null);
+	};
 	useEffect(() => {
 		if (note !== null) setIsOpen(true);
 	}, [note]);
+
 	const [direction, setDirection] = useState("left");
 
 	const handleResize = () => {
@@ -83,6 +101,9 @@ export const NotePane = () => {
 		dispatch(setActiveNote(null));
 		setIsOpen(false);
 	};
+	const onChangeWorkspace= () => {
+		
+	}
 
 	return (
 		<>
@@ -156,16 +177,38 @@ export const NotePane = () => {
 						bgcolor: note ? note.color : "white",
 					}}
 				>
-					<NoteAltOutlined
-						sx={{ color: "white", marginRight: 2, fontSize: 50 }}
-					/>
-					<Typography
-						color="white"
-						textAlign="right"
-						sx={{ fontSize: `calc(100% * ${1.7})` }}
-					>
-						Datos de la nota
-					</Typography>
+					<Grid item xs={2}>
+						<NoteAltOutlined
+							sx={{ color: "white", marginRight: 0, fontSize: 50 }}
+						/>
+					</Grid>
+					<Grid item xs={8}>
+						<Typography
+							color="white"
+							textAlign="left"
+							sx={{ fontSize: `calc(100% * ${1.7})` }}
+						>
+							Datos de la nota
+						</Typography>
+					</Grid>
+					<Grid item xs={2}>
+						<Fade in={isOpen} timeout={4500}>
+							<Tooltip title="Cambiar espacio de trabajo">
+								<IconButton
+									onClick={handleClick}									
+									variant="contained"
+									sx={{
+										my: 0,
+										bgcolor: note ? note.color : "white",
+										"&:hover": { bgcolor: note ? note.color : "white", opacity: 0.8 },
+									}}
+								>
+									<ChangeCircle sx={{ fontSize: 35 }} />
+								</IconButton>
+							</Tooltip>
+							</Fade>
+					</Grid>
+					
 				</Grid>
 				<Divider />
 				<Grid container>
@@ -270,6 +313,59 @@ export const NotePane = () => {
 						</Grid>
 					</Grid>
 				</Toolbar>
+				<Menu
+					anchorEl={anchorEl}
+					id="account-menu"
+					open={open}
+					onClose={handleClose}
+					onClick={handleClose}
+					PaperProps={{
+						elevation: 0,
+						sx: {
+							overflow: "visible",
+							filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+							mt: 1.5,
+							"& .MuiAvatar-root": {
+								width: 32,
+								height: 32,
+								ml: -0.5,
+								mr: 1,
+							},
+							"&:before": {
+								content: '""',
+								display: "block",
+								position: "absolute",
+								top: 0,
+								right: 14,
+								width: 10,
+								height: 10,
+								bgcolor: "background.paper",
+								transform: "translateY(-50%) rotate(45deg)",
+								zIndex: 0,
+							},
+						},
+					}}
+					transformOrigin={{ horizontal: "right", vertical: "top" }}
+					anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+				>
+					{workspaces.map((workspace) => (
+							<MenuItem disabled={activeWorkspace.id === workspace.id ? true : false} onClick={onChangeWorkspace()} key={workspace.id}>
+								<ListItemIcon>
+									<Circle fontSize="small" />
+								</ListItemIcon>
+								{workspace.name}
+							</MenuItem>))
+					}
+					<Divider/>
+					<MenuItem disabled={activeWorkspace.id === workspaceDefault.id ? true : false}  onClick={onChangeWorkspace()} name="workspace"
+						value={workspaceDefault.id} key={workspaceDefault.id}>
+						<ListItemIcon>
+							<HorizontalRule fontSize="small" />
+						</ListItemIcon>
+						{workspaceDefault.name}
+					</MenuItem>
+				</Menu>
+				
 			</Drawer>
 			<SpeedDial
 				ariaLabel="SpeedDial basic example"
